@@ -1,0 +1,46 @@
+defaults:
+  - sl_agent@agent: sl_ddpgbc
+  - _self_
+
+# File path
+cwd: ${hydra:runtime.output_dir}
+
+# Training params
+n_train_steps: 2_000_001
+n_eval: 400
+n_save: 160
+n_log: 4000
+num_demo: 200
+eval_frequency: 2_000
+n_seed_steps: 200
+
+replay_buffer_capacity: 100_000
+checkpoint_frequency: 20_000
+update_epoch: 80
+batch_size: 128
+device: cuda:0
+seed: 1
+task: BiPegTransfer-v0
+subtask: grasp
+postfix: null
+skill_chaining: False
+dont_save: False
+n_eval_episodes: 8
+save_buffer: False
+
+use_wb: True
+project_name: viskill
+entity_name: thuang22
+
+mpi: {rank: null, is_chef: null, num_workers: null}
+# Working space
+hydra:
+  run:
+    dir: ./exp/skill_learning/${task}/${agent.name}/d${num_demo}/s${seed}/${subtask}
+  sweep:
+    dir: ./exp/skill_learning/${task}/${agent.name}/d${num_demo}/s${seed}
+    subdir: ${subtask}
+  sweeper:
+    params:
+      seed: 1,2,3,4,5
+      subtask: grasp,handover,release

@@ -1,0 +1,53 @@
+defaults:
+  - hier_agent@agent: hier_agent
+  - sc_agent: sc_sac_sil
+  - sl_agent: sl_dex
+  - _self_
+
+# File path
+cwd: ${hydra:runtime.output_dir}
+
+# Training params
+task: BiPegTransfer-v0
+init_subtask: grasp
+subtask: ${init_subtask}
+postfix: null
+skill_chaining: True
+dont_save: False
+checkpoint_dir: ./exp/skill_learning/${task}/${sl_agent.name}/d${num_demo}/s${model_seed}
+
+num_demo: 200
+seed: 1
+model_seed: 12
+device: cuda:0
+update_epoch: 20
+replay_buffer_capacity: 100_000
+batch_size: 128
+
+n_train_steps: 2_000_001
+n_eval: 200
+n_save: 100
+n_log: 9600
+n_eval_episodes: 10
+eval_frequency: 2_000
+n_seed_steps: 200
+use_demo_buffer: True
+ckpt_episode: best
+reset_prob: 0
+
+use_wb: True
+project_name: viskill
+entity_name: thuang22
+
+mpi: {rank: null, is_chef: null, num_workers: null}
+# Working space
+hydra:
+  run:
+    dir: ./exp/viskill/${task}/${sc_agent.name}_${sl_agent.name}/d${num_demo}/rs${sc_agent.reward_scale}/s${seed}
+  sweep:
+    dir: ./exp/viskill/${task}/${sc_agent.name}_${sl_agent.name}/d${num_demo}/rs${sc_agent.reward_scale}
+    subdir: s${seed}
+  sweeper:
+    params:
+      num_demo: 200
+      seed: 1,2,3,4,5

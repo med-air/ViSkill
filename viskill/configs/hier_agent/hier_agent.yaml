@@ -1,0 +1,10 @@
+name: hier_agent
+checkpoint_dir: ${checkpoint_dir}
+
+# SC agent (high-level agent)
+sc_agent: ${sc_agent}
+update_sc_agent: True
+
+# SL agent (low-level agent)
+sl_agent: ${sl_agent}
+update_sl_agent: False
