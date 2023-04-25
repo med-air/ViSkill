@@ -1,6 +1,9 @@
 import os
+
 import numpy as np
-from .general_utils import RecursiveAverageMeter, AttrDict
+
+from .general_utils import AttrDict, RecursiveAverageMeter
+
 
 def get_env_params(env, cfg):
     obs = env.reset()
@@ -27,7 +30,6 @@ def get_env_params(env, cfg):
             middle_subtasks=env.next_subtasks.keys(),
             last_subtask=env.last_subtask,
             reward_funcs=env.get_reward_functions(),
-            reset_prob=cfg.reset_prob,
             len_cond=env.len_cond
         ))
     return env_params

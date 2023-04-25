@@ -1,20 +1,20 @@
-import torch
-import hydra
 import os
-from pathlib import Path
 
-from .sl_trainer import SkillLearningTrainer
-from ..components.checkpointer import CheckpointHandler
-from ..components.logger import logger, WandBLogger, Logger
-from ..modules.sampler import HierarchicalSampler
+import torch
+
 from ..agents import make_hier_agent
-from ..modules.replay_buffer import get_hier_buffer_samplers, HerReplayBuffer, ReplayBuffer
-from ..utils.general_utils import set_seed_everywhere, Timer, Until, Every, AverageMeter, AttrDict
+from ..components.checkpointer import CheckpointHandler
+from ..components.logger import Logger, WandBLogger, logger
+from ..modules.replay_buffer import (HerReplayBuffer, ReplayBuffer,
+                                     get_hier_buffer_samplers)
+from ..modules.sampler import HierarchicalSampler
+from ..utils.general_utils import (AttrDict, AverageMeter, Every, Timer, Until,
+                                   set_seed_everywhere)
+from ..utils.mpi import (mpi_gather_experience_successful_transitions,
+                         mpi_gather_experience_transitions, mpi_sum,
+                         update_mpi_config)
 from ..utils.rl_utils import RolloutStorage, init_demo_buffer, init_sc_buffer
-from ..utils.mpi import update_mpi_config, mpi_gather_experience_transitions, mpi_sum, mpi_gather_experience_successful_transitions
-
-WANDB_PROJECT_NAME = 'skill_chaining'
-WANDB_ENTITY_NAME = 'thuang22'
+from .sl_trainer import SkillLearningTrainer
 
 
 class SkillChainingTrainer(SkillLearningTrainer):
@@ -66,7 +66,7 @@ class SkillChainingTrainer(SkillLearningTrainer):
             exp_name = f"SC_{self.cfg.task}_{self.cfg.agent.sc_agent.name}_{self.cfg.agent.sl_agent.name}_seed{self.cfg.seed}"
             if self.cfg.postfix is not None:
                 exp_name =  exp_name + '_' + self.cfg.postfix 
-            self.wb = WandBLogger(exp_name=exp_name, project_name=WANDB_PROJECT_NAME, entity=WANDB_ENTITY_NAME, \
+            self.wb = WandBLogger(exp_name=exp_name, project_name=self.cfg.project_name, entity=self.cfg.entity_name, \
                     path=self.work_dir, conf=self.cfg)
             self.logger = Logger(self.work_dir)
             self.termlog = logger
@@ -74,7 +74,6 @@ class SkillChainingTrainer(SkillLearningTrainer):
             self.wb, self.logger, self.termlog = None, None, None
 
     def _setup_misc(self):
-        #init_demo_buffer(self.cfg, self.demo_buffer, self.agent)
         init_sc_buffer(self.cfg, self.sc_buffer, self.agent, self.env_params)
         init_sc_buffer(self.cfg, self.sc_demo_buffer, self.agent, self.env_params)
         

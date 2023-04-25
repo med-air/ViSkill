@@ -1,22 +1,20 @@
-import torch
-import hydra
 import os
-from pathlib import Path
 
-from .base_trainer import BaseTrainer
-from ..components.logger import logger, WandBLogger, Logger
-from ..components.envrionment import make_env
-from ..components.checkpointer import CheckpointHandler, save_cmd
-from ..modules.sampler import Sampler
+import torch
+
 from ..agents.factory import make_sl_agent
-from ..modules.replay_buffer import get_buffer_sampler, HerReplayBufferWithGT
-from ..utils.general_utils import set_seed_everywhere, Timer, Until, Every, AverageMeter
-from ..utils.rl_utils import get_env_params, RolloutStorage, init_demo_buffer
-from ..utils.mpi import update_mpi_config, mpi_sum, mpi_gather_experience_rollots, \
-                        mpi_gather_experience_episode
-
-WANDB_PROJECT_NAME = 'skill_chaining'
-WANDB_ENTITY_NAME = 'thuang22'
+from ..components.checkpointer import CheckpointHandler, save_cmd
+from ..components.envrionment import make_env
+from ..components.logger import Logger, WandBLogger, logger
+from ..modules.replay_buffer import HerReplayBufferWithGT, get_buffer_sampler
+from ..modules.sampler import Sampler
+from ..utils.general_utils import (AverageMeter, Every, Timer, Until,
+                                   set_seed_everywhere)
+from ..utils.mpi import (mpi_gather_experience_episode,
+                         mpi_gather_experience_rollots, mpi_sum,
+                         update_mpi_config)
+from ..utils.rl_utils import RolloutStorage, get_env_params, init_demo_buffer
+from .base_trainer import BaseTrainer
 
 
 class SkillLearningTrainer(BaseTrainer):
@@ -56,7 +54,7 @@ class SkillLearningTrainer(BaseTrainer):
             exp_name = f"SL_{self.cfg.task}_{self.cfg.subtask}_{self.cfg.agent.name}_seed{self.cfg.seed}"
             if self.cfg.postfix is not None:
                 exp_name =  exp_name + '_' + self.cfg.postfix 
-            self.wb = WandBLogger(exp_name=exp_name, project_name=WANDB_PROJECT_NAME, entity=WANDB_ENTITY_NAME, \
+            self.wb = WandBLogger(exp_name=exp_name, project_name=self.cfg.project_name, entity=self.cfg.entity_name, \
                     path=self.work_dir, conf=self.cfg)
             self.logger = Logger(self.work_dir)
             self.termlog = logger
@@ -142,7 +140,7 @@ class SkillLearningTrainer(BaseTrainer):
 
         # save to buffer
         self.buffer.store_episode(rollouts)
-        self.agent.update_normalizer(rollouts)           # TODO: hidden to 
+        self.agent.update_normalizer(rollouts)          
 
         # update policy
         if not seed_until_steps(ep_start_step):

@@ -1,10 +1,11 @@
-import torch
+import collections
+import itertools
 import random
 import time
-import numpy as np
-import itertools
-import collections
 from functools import reduce
+
+import numpy as np
+import torch
 
 
 def set_seed_everywhere(seed):

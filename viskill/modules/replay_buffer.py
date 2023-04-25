@@ -1,9 +1,12 @@
-import os
 import gzip
+import os
 import pickle
+
 import numpy as np
 from torch.utils.data import Dataset
+
 from ..utils.general_utils import AttrDict
+
 
 #-------------------------Hindsight Experience Replay-------------------------
 class HerReplayBuffer:

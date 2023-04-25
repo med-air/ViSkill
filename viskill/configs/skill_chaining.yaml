@@ -33,7 +33,6 @@ eval_frequency: 2_000
 n_seed_steps: 200
 use_demo_buffer: True
 ckpt_episode: latest
-reset_prob: 0
 
 use_wb: True
 project_name: viskill

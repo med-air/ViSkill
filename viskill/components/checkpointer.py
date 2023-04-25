@@ -1,12 +1,13 @@
 import glob
-import os 
-import sys
+import os
 import pipes
+import sys
 
 import numpy as np
 import torch
-from ..utils.general_utils import str2int, get_last_argmax
+
 from ..components.logger import logger
+from ..utils.general_utils import get_last_argmax, str2int
 
 
 class CheckpointHandler:
@@ -43,19 +44,6 @@ class CheckpointHandler:
     def save_checkpoint(state, folder, filename='checkpoint.pth'):
         torch.save(state, os.path.join(folder, filename))
         
-    # @staticmethod
-    # def load_checkpoint(checkpt_dir, agent, buffer, device, episode='best'):
-    #     """Loads weigths from checkpoint."""
-    #     checkpt_path, max_episode = CheckpointHandler.get_resume_ckpt_file(episode, checkpt_dir)
-    #     checkpt = torch.load(checkpt_path, map_location=device)
-    
-    #     logger.info(f'Loading pre-trained model from {checkpt_path}!')
-    #     agent.load_state_dict(checkpt['state_dict'])
-    #     agent.g_norm = checkpt['g_norm']
-    #     agent.o_norm = checkpt['o_norm']
-
-    #     buffer.load(checkpt_dir, max_episode)
-
     @staticmethod
     def load_checkpoint(checkpt_dir, agent, device, episode='best'):
         """Loads weigths from checkpoint."""

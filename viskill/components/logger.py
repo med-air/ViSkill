@@ -1,16 +1,17 @@
-import wandb
+import csv
+import datetime
 import inspect
 import logging
+import os
+from collections import defaultdict
+
 import colorlog
 import numpy as np
 import torch
-import os
-import csv
-from collections import defaultdict
+import wandb
 from termcolor import colored
-import datetime
 
-from ..utils.general_utils import flatten_dict, prefix_dict, np2obj
+from ..utils.general_utils import flatten_dict, np2obj, prefix_dict
 from ..utils.vis_utils import add_captions_to_seq
 
 #----------------------Termnial Logger----------------------

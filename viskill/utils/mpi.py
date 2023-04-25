@@ -1,7 +1,9 @@
 import numpy as np
-from mpi4py import MPI
 import torch
-from .general_utils import AttrDict, joinListDictList, joinListDict, joinListList
+from mpi4py import MPI
+
+from .general_utils import (AttrDict, joinListDict, joinListDictList,
+                            joinListList)
 
 
 def update_mpi_config(cfg):

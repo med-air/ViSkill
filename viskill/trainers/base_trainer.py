@@ -1,5 +1,6 @@
-from pathlib import Path
 from abc import abstractmethod
+from pathlib import Path
+
 
 class BaseTrainer:
     def __init__(self, cfg) -> None:

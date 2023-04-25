@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 
+
 def add_caption_to_img(img, info, name=None, flip_rgb=False):
     """ Adds caption to an image. info is dict with keys and text/array.
         :arg name: if given this will be printed as heading in the first line

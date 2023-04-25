@@ -1,6 +1,5 @@
-import torch
 import torch.nn as nn
-from torch import autograd
+
 
 class MLP(nn.Module):
     def __init__(self, in_dim, out_dim, hidden_dim=256):
