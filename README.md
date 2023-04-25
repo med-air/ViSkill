@@ -4,6 +4,10 @@ This is the official PyTorch implementation of the paper "**Value-Informed Skill
   <img width="98%" src="docs/resources/viskill_teaser.png">
 </p> -->
 
+<p align="left">
+  <img width="99%" src="docs/resources/viskill_teaser.png">
+</p>
+
 # Prerequisites
 * Ubuntu 18.04
 * Python 3.7+
@@ -13,7 +17,7 @@ This is the official PyTorch implementation of the paper "**Value-Informed Skill
 
 1. Clone this repository.
 ```bash
-git clone https://github.com/med-air/ViSkill.git
+git clone --recursive https://github.com/med-air/ViSkill.git
 cd ViSkill
 ```
 
