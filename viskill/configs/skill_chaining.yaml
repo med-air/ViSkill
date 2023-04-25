@@ -18,13 +18,13 @@ checkpoint_dir: ./exp/skill_learning/${task}/${sl_agent.name}/d${num_demo}/s${mo
 
 num_demo: 200
 seed: 1
-model_seed: 12
+model_seed: 1
 device: cuda:0
 update_epoch: 20
 replay_buffer_capacity: 100_000
 batch_size: 128
 
-n_train_steps: 2_000_001
+n_train_steps: 1_000_001
 n_eval: 200
 n_save: 100
 n_log: 9600
@@ -32,7 +32,7 @@ n_eval_episodes: 10
 eval_frequency: 2_000
 n_seed_steps: 200
 use_demo_buffer: True
-ckpt_episode: best
+ckpt_episode: latest
 reset_prob: 0
 
 use_wb: True

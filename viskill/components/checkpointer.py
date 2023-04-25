@@ -32,7 +32,7 @@ class CheckpointHandler:
         if resume == 'latest':
             max_episode = np.max(episodes)
             resume_file = CheckpointHandler.get_ckpt_name(max_episode)
-            logger.info(f'Checkpoints with max episode {max_episode} with the success rate {scores[-1]}!')
+            logger.info(f'Checkpoints with max episode {max_episode} with the success rate {scores[np.argmax(episodes)]}!')
         elif resume == 'best':
             max_episode = episodes[get_last_argmax(scores)]
             resume_file = CheckpointHandler.get_ckpt_name(max_episode)
@@ -42,6 +42,19 @@ class CheckpointHandler:
     @staticmethod
     def save_checkpoint(state, folder, filename='checkpoint.pth'):
         torch.save(state, os.path.join(folder, filename))
+        
+    # @staticmethod
+    # def load_checkpoint(checkpt_dir, agent, buffer, device, episode='best'):
+    #     """Loads weigths from checkpoint."""
+    #     checkpt_path, max_episode = CheckpointHandler.get_resume_ckpt_file(episode, checkpt_dir)
+    #     checkpt = torch.load(checkpt_path, map_location=device)
+    
+    #     logger.info(f'Loading pre-trained model from {checkpt_path}!')
+    #     agent.load_state_dict(checkpt['state_dict'])
+    #     agent.g_norm = checkpt['g_norm']
+    #     agent.o_norm = checkpt['o_norm']
+
+    #     buffer.load(checkpt_dir, max_episode)
 
     @staticmethod
     def load_checkpoint(checkpt_dir, agent, device, episode='best'):
