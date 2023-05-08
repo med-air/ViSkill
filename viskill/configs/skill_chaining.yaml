@@ -25,8 +25,8 @@ replay_buffer_capacity: 100_000
 batch_size: 128
 
 n_train_steps: 1_000_001
-n_eval: 200
-n_save: 100
+n_eval: 1600
+n_save: 800
 n_log: 9600
 n_eval_episodes: 10
 eval_frequency: 2_000

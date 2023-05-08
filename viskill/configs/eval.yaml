@@ -1,0 +1,19 @@
+defaults:
+  - skill_chaining
+  - _self_
+
+sc_seed: 2
+sc_ckpt_dir: ./exp/viskill/${task}/${sc_agent.name}_${sl_agent.name}/d${num_demo}/rs${sc_agent.reward_scale}/s${sc_seed}/model
+sc_ckpt_episode: best
+
+# Working space
+hydra:
+  run:
+    dir: ./exp/eval/viskill/${task}/${sc_agent.name}_${sl_agent.name}/d${num_demo}/rs${sc_agent.reward_scale}/s${seed}
+  sweep:
+    dir: ./exp/eval/viskill/${task}/${sc_agent.name}_${sl_agent.name}/d${num_demo}/rs${sc_agent.reward_scale}
+    subdir: s${seed}
+  sweeper:
+    params:
+      num_demo: 200
+      seed: 1,2,3,4,5

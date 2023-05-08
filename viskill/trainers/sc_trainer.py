@@ -12,6 +12,7 @@ from ..utils.general_utils import (AttrDict, AverageMeter, Every, Timer, Until,
                                    set_seed_everywhere)
 from ..utils.mpi import (mpi_gather_experience_successful_transitions,
                          mpi_gather_experience_transitions, mpi_sum,
+                         mpi_gather_experience_rollots,
                          update_mpi_config)
 from ..utils.rl_utils import RolloutStorage, init_demo_buffer, init_sc_buffer
 from .sl_trainer import SkillLearningTrainer
@@ -194,3 +195,30 @@ class SkillChainingTrainer(SkillLearningTrainer):
                 log('step', self.global_step)
                 log('ETA', togo_train_time)
             self.wb.log_outputs(metrics, None, log_images=False, step=self.global_step, is_train=True)
+
+    def eval_ckpt(self):
+        '''Eval checkpoint.'''
+        CheckpointHandler.load_checkpoint(
+            self.cfg.sc_ckpt_dir, self.agent, self.device, self.cfg.sc_ckpt_episode
+        )
+        
+        eval_rollout_storage = RolloutStorage()
+        for _ in range(self.cfg.n_eval_episodes):
+            episode, _, env_steps = self.eval_sampler.sample_episode(is_train=False, render=True)
+            eval_rollout_storage.append(episode)
+        rollout_status = eval_rollout_storage.rollout_stats()
+        if self.use_multiple_workers:
+            rollout_status = mpi_gather_experience_rollots(rollout_status)
+            for key, value in rollout_status.items():
+                rollout_status[key] = value.mean()
+
+        if self.is_chef:
+            self.wb.log_outputs(rollout_status, eval_rollout_storage, log_images=True, step=self.global_step)
+            with self.logger.log_and_dump_ctx(self.global_step, ty='eval') as log:
+                log('episode_sr', rollout_status.avg_success_rate)
+                log('episode_reward', rollout_status.avg_reward)
+                log('episode_length', env_steps)
+                log('episode', self.global_episode)
+                log('step', self.global_step)
+
+        del eval_rollout_storage
