@@ -1,5 +1,5 @@
 # ViSkill: Value-Informed Skill Chaining for Policy Learning of Long-Horizon Tasks with Surgical Robot
-This is the official PyTorch implementation of the paper "**Value-Informed Skill Chaining for Policy Learning of Long-Horizon Tasks with Surgical Robot**". 
+This is the official PyTorch implementation of the paper "**Value-Informed Skill Chaining for Policy Learning of Long-Horizon Tasks with Surgical Robot**" (IROS 2023). 
 <!-- <p align="left">
   <img width="98%" src="docs/resources/viskill_teaser.png">
 </p> -->
