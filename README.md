@@ -56,9 +56,9 @@ python SurRoL/surrol/data/data_generation_bipegtransfer.py --env BiPegTransfer-v
 
 - Train subtask policies:
 ```bash
-mpirun -np 8 python -m train_sl.py seed=1 subtask=grasp
-mpirun -np 8 python -m train_sl.py seed=1 subtask=handover
-mpirun -np 8 python -m train_sl.py seed=1 subtask=release
+mpirun -np 8 python -m train_sl seed=1 subtask=grasp
+mpirun -np 8 python -m train_sl seed=1 subtask=handover
+mpirun -np 8 python -m train_sl seed=1 subtask=release
 ```
 
 - Train chaining policies:

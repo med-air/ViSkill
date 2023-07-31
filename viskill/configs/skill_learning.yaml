@@ -1,5 +1,5 @@
 defaults:
-  - sl_agent@agent: sl_ddpgbc
+  - sl_agent@agent: sl_dex
   - _self_
 
 # File path
