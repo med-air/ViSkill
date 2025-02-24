@@ -6,7 +6,7 @@ imageio
 
 # RL
 gym==0.15.6
-mpi4py
+# mpi4py
 
 # Log
 colorlog

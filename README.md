@@ -19,6 +19,7 @@ This is the official PyTorch implementation of the paper "[**Value-Informed Skil
 ```bash
 git clone --recursive https://github.com/med-air/ViSkill.git
 cd ViSkill
+git submodule update --init --recursive
 ```
 
 2. Create a virtual environment

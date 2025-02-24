@@ -76,12 +76,12 @@ class WandBLogger:
 
         logger.info("Init wandb")
         wandb.init(
-            resume=exp_name,
+            resume='allow',
             project=project_name,
             config=filtered_config,
             dir=path,
             entity=entity,
-            notes=conf.notes if 'notes' in conf else ''
+            notes=conf.notes if 'notes' in conf else '',
         )
 
     def log_scalar_dict(self, d, prefix='', step=None):
